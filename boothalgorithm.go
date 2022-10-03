@@ -61,6 +61,42 @@ func (L *List) tambahValue(ctr int, desimal int) {
 	}
 }
 
+func (L *List) size() int {
+	count := 0
+	list := L.head
+	for list != nil {
+		count += 1
+		list = list.next
+	}
+	return count
+}
+
+func autoBit(M *List, Q *List, A *List, sizeM int, sizeQ int) {
+	if sizeM > sizeQ {
+		M.newNode(0)
+		for i := 0; i < ((sizeM + 1) - sizeQ); i++ {
+			Q.newNode(0)
+		}
+		for i := 0; i < (sizeM + 1); i++ {
+			A.newNode(0)
+		}
+	} else if sizeQ > sizeM {
+		Q.newNode(0)
+		for i := 0; i < ((sizeQ + 1) - sizeM); i++ {
+			M.newNode(0)
+		}
+		for i := 0; i < (sizeQ + 1); i++ {
+			A.newNode(0)
+		}
+	} else {
+		M.newNode(0)
+		Q.newNode(0)
+		for i := 0; i < (sizeM + 1); i++ {
+			A.newNode(0)
+		}
+	}
+}
+
 func (L *List) display() {
 	print := L.head
 	for print != nil {
@@ -73,21 +109,30 @@ func main() {
 	ctr := 0
 	Q := &List{}
 	M := &List{}
+	A := new(List)
 	var desimalM, desimalQ int
 	fmt.Print("masukkan angka desimal M : ")
 	fmt.Scan(&desimalM)
 	fmt.Print("masukkan angka desimal Q : ")
 	fmt.Scan(&desimalQ)
 
-	fmt.Printf("M : ")
 	M.newNode(0)
 	M.tambahValue(ctr, desimalM)
+
+	Q.newNode(0)
+	Q.tambahValue(ctr, desimalQ)
+	autoBit(M, Q, A, M.size(), Q.size())
+
+	fmt.Printf("M : ")
 	M.display()
 	fmt.Println()
 
 	fmt.Printf("Q : ")
-	Q.newNode(0)
-	Q.tambahValue(ctr, desimalQ)
 	Q.display()
 	fmt.Println()
+
+	fmt.Printf("A : ")
+	A.display()
+	fmt.Println()
+
 }
