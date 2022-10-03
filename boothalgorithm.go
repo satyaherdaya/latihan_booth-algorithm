@@ -125,6 +125,66 @@ func (L *List) minBiner() {
 
 }
 
+func APM(M *List, A *List, desimal int) {
+	if M.head.val == 1 {
+		if desimal > 0 {
+			M.minBiner()
+		}
+	} else if M.head.val == 0 {
+		if desimal < 0 {
+			M.minBiner()
+		}
+	}
+
+	listM := M.tail
+	listA := A.tail
+
+	for listA != nil {
+		listA.val = listA.val + listM.val
+		if listA.val == 2 {
+			listA.val = 0
+			if listA.prev != nil {
+				listA.prev.val += 1
+			} else {
+				break
+			}
+		} else if listA.val == 3 {
+			listA.val = 1
+			if listA.prev != nil {
+				listA.prev.val += 1
+			}
+		}
+		listA = listA.prev
+		listM = listM.prev
+	}
+}
+
+func AMM(M *List, A *List) {
+	M.minBiner()
+
+	listM := M.tail
+	listA := A.tail
+
+	for listA != nil {
+		listA.val = listA.val + listM.val
+		if listA.val == 2 {
+			listA.val = 0
+			if listA.prev != nil {
+				listA.prev.val += 1
+			} else {
+				break
+			}
+		} else if listA.val == 3 {
+			listA.val = 1
+			if listA.prev != nil {
+				listA.prev.val += 1
+			}
+		}
+		listA = listA.prev
+		listM = listM.prev
+	}
+}
+
 func (L *List) display() {
 	print := L.head
 	for print != nil {
@@ -163,19 +223,24 @@ func main() {
 	A.display()
 	fmt.Println()
 
-	fmt.Printf("-M : ")
-	M.minBiner()
-	M.display()
-	fmt.Println()
-
-	fmt.Printf("-Q : ")
-	Q.minBiner()
-	Q.display()
-	fmt.Println()
-
-	fmt.Printf("-A : ")
-	A.minBiner()
+	AMM(M, A)
+	fmt.Printf("A : ")
 	A.display()
 	fmt.Println()
+
+	// fmt.Printf("-M : ")
+	// M.minBiner()
+	// M.display()
+	// fmt.Println()
+
+	// fmt.Printf("-Q : ")
+	// Q.minBiner()
+	// Q.display()
+	// fmt.Println()
+
+	// fmt.Printf("-A : ")
+	// A.minBiner()
+	// A.display()
+	// fmt.Println()
 
 }
