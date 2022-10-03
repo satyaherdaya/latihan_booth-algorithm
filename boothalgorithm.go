@@ -97,6 +97,34 @@ func autoBit(M *List, Q *List, A *List, sizeM int, sizeQ int) {
 	}
 }
 
+func (L *List) minBiner() {
+	list := L.tail
+	for list != nil {
+		if list.val == 0 {
+			list.val = 1
+		} else if list.val == 1 {
+			list.val = 0
+		}
+		list = list.prev
+	}
+	list = L.tail
+	list.val += 1
+	for list != nil {
+		if list.val == 2 {
+			if list.prev != nil {
+				list.prev.val += 1
+				list.val = 0
+			} else {
+				list.val = 0
+				break
+			}
+		} else {
+			list = list.prev
+		}
+	}
+
+}
+
 func (L *List) display() {
 	print := L.head
 	for print != nil {
@@ -132,6 +160,21 @@ func main() {
 	fmt.Println()
 
 	fmt.Printf("A : ")
+	A.display()
+	fmt.Println()
+
+	fmt.Printf("-M : ")
+	M.minBiner()
+	M.display()
+	fmt.Println()
+
+	fmt.Printf("-Q : ")
+	Q.minBiner()
+	Q.display()
+	fmt.Println()
+
+	fmt.Printf("-A : ")
+	A.minBiner()
 	A.display()
 	fmt.Println()
 
