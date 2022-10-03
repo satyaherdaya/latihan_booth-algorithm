@@ -28,6 +28,13 @@ func (L *List) newNode(nilai int) {
 	L.head = baru
 }
 
+func (L *List) deleteLastNode() {
+	temp := L.tail
+	L.tail.prev.next = nil
+	L.tail = temp.prev
+	temp = nil
+}
+
 func (L *List) tambahValue(ctr int, desimal int) {
 	baru := L.tail
 	for ctr < desimal {
@@ -125,13 +132,13 @@ func (L *List) minBiner() {
 
 }
 
-func APM(M *List, A *List, desimal int) {
+func APM(A *List, M *List, desimalM int) {
 	if M.head.val == 1 {
-		if desimal > 0 {
+		if desimalM > 0 {
 			M.minBiner()
 		}
 	} else if M.head.val == 0 {
-		if desimal < 0 {
+		if desimalM < 0 {
 			M.minBiner()
 		}
 	}
@@ -159,7 +166,7 @@ func APM(M *List, A *List, desimal int) {
 	}
 }
 
-func AMM(M *List, A *List) {
+func AMM(A *List, M *List) {
 	M.minBiner()
 
 	listM := M.tail
@@ -185,6 +192,20 @@ func AMM(M *List, A *List) {
 	}
 }
 
+func rshift(A *List, Q *List) {
+	listA := A.head
+
+	if listA.val == 0 {
+		A.newNode(0)
+	} else if listA.val == 1 {
+		A.newNode(1)
+	}
+	listA = A.tail
+	Q.newNode(listA.val)
+	A.deleteLastNode()
+	Q.deleteLastNode()
+}
+
 func (L *List) display() {
 	print := L.head
 	for print != nil {
@@ -195,6 +216,8 @@ func (L *List) display() {
 
 func main() {
 	ctr := 0
+	ctrBit := 1
+	q := 0
 	Q := &List{}
 	M := &List{}
 	A := new(List)
@@ -219,28 +242,24 @@ func main() {
 	Q.display()
 	fmt.Println()
 
-	fmt.Printf("A : ")
+	bit := M.size()
+
+	for ctrBit <= bit {
+		tempTailQ := Q.tail
+		if tempTailQ.val == 1 && q == 0 {
+			AMM(A, M)
+			q = 1
+		} else if tempTailQ.val == 0 && q == 1 {
+			APM(A, M, desimalM)
+			q = 0
+		} else if (tempTailQ.val == 0 && q == 0) || (tempTailQ.val == 1 && q == 1) {
+			rshift(A, Q)
+			ctrBit += 1
+		}
+	}
+	fmt.Println("Hasil : ")
 	A.display()
+	fmt.Printf(" ")
+	Q.display()
 	fmt.Println()
-
-	AMM(M, A)
-	fmt.Printf("A : ")
-	A.display()
-	fmt.Println()
-
-	// fmt.Printf("-M : ")
-	// M.minBiner()
-	// M.display()
-	// fmt.Println()
-
-	// fmt.Printf("-Q : ")
-	// Q.minBiner()
-	// Q.display()
-	// fmt.Println()
-
-	// fmt.Printf("-A : ")
-	// A.minBiner()
-	// A.display()
-	// fmt.Println()
-
 }
