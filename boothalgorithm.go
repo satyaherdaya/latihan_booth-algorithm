@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Node struct {
 	val  int
@@ -133,12 +136,12 @@ func (L *List) minBiner() {
 }
 
 func APM(A *List, M *List, desimalM int) {
-	if M.head.val == 1 {
-		if desimalM > 0 {
+	if desimalM > 0 {
+		if M.head.val == 1 {
 			M.minBiner()
 		}
-	} else if M.head.val == 0 {
-		if desimalM < 0 {
+	} else {
+		if M.head.val == 0 {
 			M.minBiner()
 		}
 	}
@@ -227,12 +230,47 @@ func main() {
 	fmt.Print("masukkan angka desimal Q : ")
 	fmt.Scan(&desimalQ)
 
-	M.newNode(0)
-	M.tambahValue(ctr, desimalM)
+	if desimalM < 0 && desimalQ < 0 {
+		M.newNode(0)
+		desM := math.Abs(float64(desimalM))
+		M.tambahValue(ctr, int(desM))
 
-	Q.newNode(0)
-	Q.tambahValue(ctr, desimalQ)
-	autoBit(M, Q, A, M.size(), Q.size())
+		Q.newNode(0)
+		desQ := math.Abs(float64(desimalQ))
+		Q.tambahValue(ctr, int(desQ))
+
+		autoBit(M, Q, A, M.size(), Q.size())
+		M.minBiner()
+		Q.minBiner()
+	} else if desimalM < 0 && desimalQ > 0 {
+		M.newNode(0)
+		desM := math.Abs(float64(desimalM))
+		M.tambahValue(ctr, int(desM))
+
+		Q.newNode(0)
+		Q.tambahValue(ctr, desimalQ)
+
+		autoBit(M, Q, A, M.size(), Q.size())
+		M.minBiner()
+	} else if desimalM > 0 && desimalQ < 0 {
+		M.newNode(0)
+		M.tambahValue(ctr, desimalM)
+
+		Q.newNode(0)
+		desQ := math.Abs(float64(desimalQ))
+		Q.tambahValue(ctr, int(desQ))
+
+		autoBit(M, Q, A, M.size(), Q.size())
+		Q.minBiner()
+	} else if desimalM > 0 && desimalQ > 0 {
+		M.newNode(0)
+		M.tambahValue(ctr, desimalM)
+
+		Q.newNode(0)
+		Q.tambahValue(ctr, desimalQ)
+
+		autoBit(M, Q, A, M.size(), Q.size())
+	}
 
 	fmt.Printf("M : ")
 	M.display()
