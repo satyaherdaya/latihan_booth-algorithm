@@ -319,7 +319,7 @@ func main() {
 
 	bit := M.size()
 	fmt.Println("---------------------------------------------------------------------------------")
-	fmt.Printf("\t A \t | \t Q \t | \t q \t | \t M \t | \t")
+	fmt.Printf("\t A \t | \t Q \t | \t q \t | \t M \t | \t proccess")
 	fmt.Println()
 	fmt.Println("---------------------------------------------------------------------------------")
 
@@ -333,12 +333,14 @@ func main() {
 			AMM(A, M)
 			q = 1
 			tableDataDisplay(A, Q, M, q, desimalM)
+			fmt.Printf("After A-M")
 			fmt.Println()
 		} else if tempTailQ.val == 0 && q == 1 {
 			tableDataDisplay(A, Q, M, q, desimalM)
 			APM(A, M, desimalM)
 			q = 0
 			tableDataDisplay(A, Q, M, q, desimalM)
+			fmt.Printf("After A+M")
 			fmt.Println()
 		} else if (tempTailQ.val == 0 && q == 0) || (tempTailQ.val == 1 && q == 1) {
 			rshift(A, Q)
@@ -346,9 +348,11 @@ func main() {
 			tableDataDisplay(A, Q, M, q, desimalM)
 			fmt.Printf("Right Shift")
 			fmt.Println()
+			tableDataDisplay(A, Q, M, q, desimalM)
+			fmt.Printf("After Right Shift")
+			fmt.Println()
 		}
 	}
-
 	fmt.Println("---------------------------------------------------------------------------------")
 	fmt.Printf("Hasil : ")
 	A.display()
