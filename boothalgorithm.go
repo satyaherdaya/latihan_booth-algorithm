@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"math"
-)
+import "fmt"
 
 type Node struct {
 	val  int
@@ -136,6 +133,12 @@ func (L *List) minBiner() {
 }
 
 func APM(A *List, M *List, desimalM int) {
+	fmt.Printf("A + M : ")
+	fmt.Printf("\tA : ")
+	A.display()
+	fmt.Printf("\tM : ")
+	M.display()
+
 	if desimalM > 0 {
 		if M.head.val == 1 {
 			M.minBiner()
@@ -167,10 +170,19 @@ func APM(A *List, M *List, desimalM int) {
 		listA = listA.prev
 		listM = listM.prev
 	}
+	fmt.Printf(" \tA + M : ")
+	A.display()
+	fmt.Println()
 }
 
 func AMM(A *List, M *List) {
 	M.minBiner()
+
+	fmt.Printf("A - M : ")
+	fmt.Printf("\tA : ")
+	A.display()
+	fmt.Printf("\t-M : ")
+	M.display()
 
 	listM := M.tail
 	listA := A.tail
@@ -193,6 +205,9 @@ func AMM(A *List, M *List) {
 		listA = listA.prev
 		listM = listM.prev
 	}
+	fmt.Printf("\tA - M : ")
+	A.display()
+	fmt.Println()
 }
 
 func rshift(A *List, Q *List) {
@@ -217,6 +232,27 @@ func (L *List) display() {
 	}
 }
 
+func tableDataDisplay(A *List, Q *List, M *List, q int, desimalM int) {
+	fmt.Printf("\t ")
+	A.display()
+	fmt.Printf(" \t | \t")
+	Q.display()
+	fmt.Printf(" \t | \t ")
+	fmt.Printf("%d", q)
+	fmt.Printf(" \t | \t")
+	if desimalM > 0 {
+		if M.head.val == 1 {
+			M.minBiner()
+		}
+	} else {
+		if M.head.val == 0 {
+			M.minBiner()
+		}
+	}
+	M.display()
+	fmt.Printf(" \t | ")
+}
+
 func main() {
 	ctr := 0
 	ctrBit := 1
@@ -232,19 +268,19 @@ func main() {
 
 	if desimalM < 0 && desimalQ < 0 {
 		M.newNode(0)
-		desM := math.Abs(float64(desimalM))
-		M.tambahValue(ctr, int(desM))
+		desM := desimalM * (-1)
+		M.tambahValue(ctr, desM)
 
 		Q.newNode(0)
-		desQ := math.Abs(float64(desimalQ))
-		Q.tambahValue(ctr, int(desQ))
+		desQ := desimalQ * (-1)
+		Q.tambahValue(ctr, desQ)
 
 		autoBit(M, Q, A, M.size(), Q.size())
 		M.minBiner()
 		Q.minBiner()
 	} else if desimalM < 0 && desimalQ > 0 {
 		M.newNode(0)
-		desM := math.Abs(float64(desimalM))
+		desM := desimalM * (-1)
 		M.tambahValue(ctr, int(desM))
 
 		Q.newNode(0)
@@ -257,7 +293,7 @@ func main() {
 		M.tambahValue(ctr, desimalM)
 
 		Q.newNode(0)
-		desQ := math.Abs(float64(desimalQ))
+		desQ := desimalQ * (-1)
 		Q.tambahValue(ctr, int(desQ))
 
 		autoBit(M, Q, A, M.size(), Q.size())
@@ -272,6 +308,7 @@ func main() {
 		autoBit(M, Q, A, M.size(), Q.size())
 	}
 
+	fmt.Println("---------------------------------------------------------------------------------")
 	fmt.Printf("M : ")
 	M.display()
 	fmt.Println()
@@ -281,23 +318,42 @@ func main() {
 	fmt.Println()
 
 	bit := M.size()
+	fmt.Println("---------------------------------------------------------------------------------")
+	fmt.Printf("\t A \t | \t Q \t | \t q \t | \t M \t | \t")
+	fmt.Println()
+	fmt.Println("---------------------------------------------------------------------------------")
+
+	tableDataDisplay(A, Q, M, q, desimalM)
+	fmt.Println()
 
 	for ctrBit <= bit {
 		tempTailQ := Q.tail
 		if tempTailQ.val == 1 && q == 0 {
+			tableDataDisplay(A, Q, M, q, desimalM)
 			AMM(A, M)
 			q = 1
+			tableDataDisplay(A, Q, M, q, desimalM)
+			fmt.Println()
 		} else if tempTailQ.val == 0 && q == 1 {
+			tableDataDisplay(A, Q, M, q, desimalM)
 			APM(A, M, desimalM)
 			q = 0
+			tableDataDisplay(A, Q, M, q, desimalM)
+			fmt.Println()
 		} else if (tempTailQ.val == 0 && q == 0) || (tempTailQ.val == 1 && q == 1) {
 			rshift(A, Q)
 			ctrBit += 1
+			tableDataDisplay(A, Q, M, q, desimalM)
+			fmt.Printf("Right Shift")
+			fmt.Println()
 		}
 	}
-	fmt.Println("Hasil : ")
+
+	fmt.Println("---------------------------------------------------------------------------------")
+	fmt.Printf("Hasil : ")
 	A.display()
 	fmt.Printf(" ")
 	Q.display()
 	fmt.Println()
+	fmt.Println("---------------------------------------------------------------------------------")
 }
